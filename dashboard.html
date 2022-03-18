@@ -1,0 +1,163 @@
+<html>
+<head>
+    <link rel="stylesheet" href="dashboard.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<title>Dashboard</title>
+<body>
+
+<div id="wrapper" class="jumbotron p-0">
+
+    <div class="menu">
+        <div class="hbg">
+            <button onclick="responsive()">Menu</button>
+        </div>
+        <div class="sidebar" id="sb">
+            <div class="title">
+                <h4>DEVICE MANAGENMENT</h4>
+            </div>
+            <div class="title-menu">
+                <p> Dashboard</p>
+                <p> Logs</p>
+                <p>Setting</p>
+            </div>
+        </div>
+    </div>
+    <div id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <h2>DEVICE MANAGENMENT</h2>
+        </div>
+        <ul class="sidebar-nav fs-12">
+            <li class="link">
+                <a href="dashboard.html"> Dashboard</a>
+            </li>
+            <li class="link">
+                <a href="logs.html"> Logs</a>
+            </li>
+            <li class="link">
+                <a href="#">Setting</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h2 style="text-align: right;">Hello John</h2>
+        </div>
+        <div class="block-white mb-5">
+            <table class="table mt-5" id="dashboard">
+                <tr>
+                    <th scope="col">Device</th>
+                    <th scope="col">Mac Adress</th>
+                    <th scope="col">IP</th>
+                    <th scope="col">Create Date</th>
+                    <th scope="col">Power Consumption(kw/h)</th>
+                </tr>
+                <tr>
+                    <th colspan="4">Total</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+        <div class="row">
+            <div class="chart">
+                <canvas id="myChart"></canvas>
+            </div>
+            <div class="col-7">
+                <div class="form-group pb-3">
+                    <input type="text" placeholder=" Name" class="form-control bg-light" id="name" >
+                </div>
+                <div class="form-group pb-3">
+                    <input type="text" placeholder="IP" class="form-control bg-light" id="ip">
+                </div>
+                <div class="pb-2">
+                    <button class="btn btn-warning font-weight-bold mt-2" onclick="add()" style="width: 200px">ADD DEVICE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    tb = [
+    ["TV", "00:1B:44:11:3A:B2", "127.0.0.2", "2021-02-28", "50"],
+    ["Washer", "00:1B:44:11:3A:B3", "127.0.0.3", "2021-02-28", "50"],
+    ["Refrigerator", "00:1B:44:11:3A:B4", "127.0.0.4", "2021-02-28", "50"],
+    ["Selling Fan", "00:1B:44:11:3A:B5", "127.0.0.5", "2021-02-28", "50"]
+    ];
+    var myChart;
+    var table = document.getElementById("dashboard");
+    var total = 0;
+    var label = Array();
+    var p = Array();
+    for(var i=0; i<tb.length; i++) {
+        var row = table.insertRow(1);
+        row.insertCell(0).innerHTML = tb[i][0];
+        row.insertCell(1).innerHTML = tb[i][1];
+        row.insertCell(2).innerHTML = tb[i][2];
+        row.insertCell(3).innerHTML = tb[i][3];
+        row.insertCell(4).innerHTML = tb[i][4];
+        total = total + parseInt(tb[i][4]);
+        label.push(tb[i][0]);
+        p.push(parseInt(tb[i][4]));
+    }
+    var c = table.rows.length-1;
+    table.rows.item(c).cells.item(1).innerHTML = total;
+    function add() {
+        var table = document.getElementById("dashboard");
+        var name = document.getElementById('name').value;
+        var ip = document.getElementById('ip').value;
+        if(name==""||ip=="") {
+            alert("Invalid");
+        }
+        else {
+            tb.push([name, "", ip, "", "100"]);
+            var l = table.rows.length-1;
+            var row = table.insertRow(l);
+            row.insertCell(0).innerHTML = name;
+            row.insertCell(1).innerHTML = "";
+            row.insertCell(2).innerHTML = ip;
+            row.insertCell(3).innerHTML = "";
+            row.insertCell(4).innerHTML = "100";
+            myChart.data.labels.push(name);
+            myChart.data.datasets.forEach((dataset) => {
+                dataset.data.push(100);
+            });
+            myChart.update();
+        }
+    }
+    const data = {
+    labels: label,
+    datasets: [{
+        label: 'My First Dataset',
+        data: p,
+        backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4
+    }]
+    };
+    const config = {
+    type: 'doughnut',
+    data: data,
+    };
+    myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+  function responsive() {
+    var sidebar = document.getElementById("sb");
+    if(sidebar.className=="sidebar") {
+        sidebar.className = "sidebar_show";
+    }
+    else {
+        sidebar.className = "sidebar";
+    }
+  }
+</script>
+
+</body>
+</html>

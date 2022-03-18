@@ -1,0 +1,137 @@
+<html>
+<head>
+    <link rel="stylesheet" href="logs.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<title>Logs</title>
+<body>
+<script src="https://use.fontawesome.com/f59bcd8580.js"></script>
+<script src="https://use.fontawesome.com/f59bcd8580.js"></script>
+<div id="wrapper" class="jumbotron p-0">
+    <div id="sidebar-wrapper">
+        <div class="sidebar-brand">
+            <h2>DEVICE MANAGENMENT</h2>
+        </div>
+        <ul class="sidebar-nav fs-12">
+            <li class="link">
+                <a href="dashboard.html"> Dashboard</a>
+            </li>
+            <li class="link">
+                <a href="logs.html"> Logs</a>
+            </li>
+            <li class="link">
+                <a href="#">Setting</a>
+            </li>
+        </ul>
+    </div>
+    <p>Menu</p>
+    <div class="container">
+        <div class="header">
+            <h3 class="mt-5">Action Logs</h3>
+            <div class="input">
+                <input type="text" class="form-style" id="search" placeholder="name">
+                <button onclick="search()">Search</button>
+            </div>
+            
+        </div>
+        <div class="block-white mb-5">
+            <table class="table" id="log-table">
+                <tr>
+                    <th>Device ID#</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                </tr>
+            </table>
+        </div>
+        <div class="buttonPage" id="buttonPage">
+            <button class="back-page" onclick="back()"><strong>Back</strong></button>
+            <strong><p id="current"></p></strong>
+            <button class="next-page" onclick="next()"><strong>Next</strong></button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    log = [
+        ["101","TV", "Turn On", "124689"],
+        ["102","Washer", "Sleep", "124533"],
+        ["103","Selling Fan", "Turn Off", "124518"],
+        ["104","TV", "Turn On", "124689"],
+        ["105","Washer", "Sleep", "124533"],
+        ["106","Selling Fan", "Turn Off", "124518"],
+        ["107","TV", "Turn On", "124689"],
+        ["108","Washer", "Sleep", "124533"],
+        ["109","Selling Fan", "Turn Off", "124518"],
+        ["110","TV", "Turn On", "124689"],
+        ["111","Washer", "Sleep", "124533"],
+        ["112","Selling Fan", "Turn Off", "124518"],
+        ["113","TV", "Turn On", "124689"],
+        ["114","Washer", "Sleep", "124533"],
+        ["115","Selling Fan", "Turn Off", "124518"],
+        ["116","TV", "Turn On", "124689"],
+        ["117","Washer", "Sleep", "124533"],
+        ["118","Selling Fan", "Turn Off", "124518"],
+    ];
+    var current = 1;
+    var maxpage = parseInt(log.length/10) + 1;
+    if(log.length%10==0) {
+        maxpage--;
+    }
+    page(1);
+    function page(p) {
+        document.getElementById("current").innerHTML = p;
+        var tb = document.getElementById("log-table");
+        var length = log.length;
+        var last = p*10;
+        last = (last > length) ? length : last;
+        for(var i=1; i<tb.rows.length; i++) {
+            tb.deleteRow(i);
+            i--;
+        }
+        for(var i=10*(p-1);i<last;i++) {
+            var row = tb.insertRow(-1);
+            row.insertCell(0).innerHTML = log[i][0];
+            row.insertCell(1).innerHTML = log[i][1];
+            row.insertCell(2).innerHTML = log[i][2];
+            row.insertCell(3).innerHTML = log[i][3];
+        }
+    }
+    function next() {
+        if(current < maxpage) {
+            current++;
+            page(current);
+        }
+    }
+    function back() {
+        if(current>1) {
+            current--;
+            page(current);
+        }
+    }
+    function search() {
+        var name = document.getElementById("search").value;
+        var tb = document.getElementById("log-table");
+        for(var i=1;i<tb.rows.length;i++) {
+            tb.deleteRow(i);
+            i--;
+        }
+        for(var i=0;i<log.length;i++){
+            if(log[i][1].toLowerCase().includes(name.toLowerCase())) {
+                var row = tb.insertRow(-1);
+                row.insertCell(0).innerHTML = log[i][0];
+                row.insertCell(1).innerHTML = log[i][1];
+                row.insertCell(2).innerHTML = log[i][2];
+                row.insertCell(3).innerHTML = log[i][3];
+            }
+        }
+        var b = document.getElementsByClassName("page");
+        for(i=0;i<b.length;i++){
+            b[i].remove();
+            i--;
+        }
+    }
+</script>
+</html>

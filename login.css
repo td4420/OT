@@ -1,0 +1,29 @@
+body{
+    background: #eeeeee;
+}
+.login {
+    margin-left: 35%;
+    margin-top: 10%;
+    background-color: white;
+    width: 500px;
+    height: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.title {
+    color:rgba(141, 140, 138, 0.719)
+}
+button{
+    height:50px;
+    background-color: rgba(194, 113, 6, 0.719);
+    border-radius: 10px;
+    margin: 10px;
+}
+.form-style input{
+    background-color: rgb(158, 154, 154);
+    border-radius: 10px;
+    height:50px;
+    margin-bottom: 10px;
+}
